@@ -1,0 +1,61 @@
+name: Build SuperFlix APK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Dar permissão ao Gradle
+        run: chmod +x gradlew
+
+      - name: Debug wrapper
+        run: |
+          echo "=== ROOT ==="
+          pwd
+          ls -la
+
+          echo "=== GRADLE ==="
+          ls -la gradle || true
+
+          echo "=== WRAPPER ==="
+          ls -la gradle/wrapper || true
+
+          echo "=== FILE TYPE ==="
+          file gradle/wrapper/gradle-wrapper.jar || true
+
+          echo "=== JAR CONTENT ==="
+          jar tf gradle/wrapper/gradle-wrapper.jar | head -50 || true
+
+          echo "=== GRADLEW ==="
+          cat gradlew || true
+
+      - name: Compilar APK
+        run: ./gradlew assembleDebug
+
+      - name: Enviar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlockVerse-APK
+          path: app/build/outputs/apk/debug/*.apk
