@@ -1,0 +1,25 @@
+<!-- res/values/strings.xml -->
+<resources>
+    <string name="app_name">SuperFlix</string>
+</resources>
+
+<!-- res/values/themes.xml -->
+<resources>
+    <style name="Theme.SuperFlixApp" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
+
+<!-- res/xml/backup_rules.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="database" path="."/>
+    <include domain="sharedpref" path="."/>
+</full-backup-content>
+
+<!-- res/xml/data_extraction_rules.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="database" path="."/>
+        <include domain="sharedpref" path="."/>
+    </cloud-backup>
+</data-extraction-rules>
