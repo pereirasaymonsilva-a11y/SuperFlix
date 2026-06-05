@@ -1,7 +1,8 @@
 // ui/screens/home/components/SectionHeader.kt
 package com.superflix.app.ui.screens.home.components
 
-import androidx.compose.foundation.layout.paddingimport androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
