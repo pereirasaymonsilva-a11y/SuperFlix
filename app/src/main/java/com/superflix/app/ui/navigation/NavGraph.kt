@@ -1,8 +1,8 @@
-// ui/navigation/NavGraph.kt
 package com.superflix.app.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,7 +17,7 @@ import com.superflix.app.ui.screens.profile.ProfileScreen
 import com.superflix.app.ui.screens.search.SearchScreen
 
 @Composable
-fun NavGraph(navController = rememberNavController()) {
+fun NavGraph(navController: NavHostController = rememberNavController()) {
     val context = LocalContext.current
     
     NavHost(
@@ -28,7 +28,7 @@ fun NavGraph(navController = rememberNavController()) {
             HomeScreen(
                 context = context,
                 onMovieClick = { id, type ->
-                    navController.navigate(Destinations.Details.passArguments(id, type.name))
+                    navController.navigate("details/$id/${type.name}")
                 }
             )
         }
@@ -37,7 +37,7 @@ fun NavGraph(navController = rememberNavController()) {
             SearchScreen(
                 context = context,
                 onResultClick = { id, type ->
-                    navController.navigate(Destinations.Details.passArguments(id, type.name))
+                    navController.navigate("details/$id/${type.name}")
                 }
             )
         }
@@ -46,7 +46,7 @@ fun NavGraph(navController = rememberNavController()) {
             LibraryScreen(
                 context = context,
                 onItemClick = { id, type ->
-                    navController.navigate(Destinations.Details.passArguments(id, type.name))
+                    navController.navigate("details/$id/${type.name}")
                 }
             )
         }
@@ -56,7 +56,7 @@ fun NavGraph(navController = rememberNavController()) {
         }
         
         composable(
-            route = Destinations.Details.route,
+            route = "details/{movieId}/{type}",
             arguments = listOf(
                 navArgument("movieId") { type = NavType.StringType },
                 navArgument("type") { type = NavType.StringType }
@@ -69,13 +69,13 @@ fun NavGraph(navController = rememberNavController()) {
                 movieId = movieId,
                 mediaType = type,
                 onPlayClick = {
-                    navController.navigate(Destinations.Player.passArguments(movieId))
+                    navController.navigate("player/$movieId")
                 }
             )
         }
         
         composable(
-            route = Destinations.Player.route,
+            route = "player/{movieId}",
             arguments = listOf(
                 navArgument("movieId") { type = NavType.StringType }
             )

@@ -1,4 +1,3 @@
-// ui/theme/Theme.kt
 package com.superflix.app.ui.theme
 
 import android.os.Build
@@ -22,19 +21,13 @@ fun SuperFlixAppTheme(
             primary = Primary,
             secondary = Secondary,
             background = Background,
-            surface = Surface,
-            onPrimary = Color.White,
-            onBackground = OnBackground,
-            onSurface = OnSurface
+            surface = Surface
         )
         else -> lightColorScheme(
             primary = Primary,
             secondary = Secondary,
-            background = Color.White,
-            surface = Color.White,
-            onPrimary = Color.White,
-            onBackground = Color.Black,
-            onSurface = Color.Black
+            background = androidx.compose.ui.graphics.Color.White,
+            surface = androidx.compose.ui.graphics.Color.White
         )
     }
     

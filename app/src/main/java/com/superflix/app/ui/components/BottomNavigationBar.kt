@@ -1,4 +1,3 @@
-// ui/components/BottomNavigationBar.kt
 package com.superflix.app.ui.components
 
 import androidx.compose.material3.*
@@ -13,32 +12,36 @@ import com.superflix.app.ui.navigation.Destinations
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController = rememberNavController()) {
-    val items = listOf(
-        Destinations.Home to "Início" to Icons.Default.Home,
-        Destinations.Search to "Pesquisar" to Icons.Default.Search,
-        Destinations.Library to "Biblioteca" to Icons.Default.Folder,
-        Destinations.Profile to "Perfil" to Icons.Default.Person
-    )
-    
     NavigationBar {
         val navBackStackEntry = navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry.value?.destination?.route
         
-        items.forEach { (destination, title, icon) ->
-            NavigationBarItem(
-                icon = { Icon(icon, contentDescription = title) },
-                label = { Text(title) },
-                selected = currentRoute == destination.route,
-                onClick = {
-                    navController.navigate(destination.route) {
-                        popUpTo(Destinations.Home.route) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, contentDescription = "Início") },
+            label = { Text("Início") },
+            selected = currentRoute == Destinations.Home.route,
+            onClick = { navController.navigate(Destinations.Home.route) }
+        )
+        
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Search, contentDescription = "Pesquisar") },
+            label = { Text("Pesquisar") },
+            selected = currentRoute == Destinations.Search.route,
+            onClick = { navController.navigate(Destinations.Search.route) }
+        )
+        
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Folder, contentDescription = "Biblioteca") },
+            label = { Text("Biblioteca") },
+            selected = currentRoute == Destinations.Library.route,
+            onClick = { navController.navigate(Destinations.Library.route) }
+        )
+        
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") },
+            label = { Text("Perfil") },
+            selected = currentRoute == Destinations.Profile.route,
+            onClick = { navController.navigate(Destinations.Profile.route) }
+        )
     }
 }
