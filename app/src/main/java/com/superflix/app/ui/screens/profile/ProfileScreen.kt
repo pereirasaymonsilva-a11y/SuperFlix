@@ -1,6 +1,7 @@
 // ui/screens/profile/ProfileScreen.kt
 package com.superflix.app.ui.screens.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -124,8 +125,7 @@ fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .then(if (onClick != null) Modifier else Modifier)
-            .clickable(enabled = onClick != null) { onClick?.invoke() }
+            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -145,14 +145,5 @@ fun SettingsItem(
         if (onClick != null && trailing == null) {
             Icon(Icons.Default.ChevronRight, contentDescription = null)
         }
-    }
-}
-
-@Composable
-fun Modifier.clickable(enabled: Boolean, onClick: () -> Unit): Modifier {
-    return if (enabled) {
-        androidx.compose.foundation.clickable(onClick = onClick)
-    } else {
-        this
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -80,10 +81,11 @@ fun SearchScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        // CORRIGIDO: Converte id para String se necessário
                         items(searchResults) { id ->
                             MovieCard(
-                                movieId = id,
-                                onClick = { onResultClick(id, MediaType.MOVIE) }
+                                movieId = id.toString(), // Garante que é String
+                                onClick = { onResultClick(id.toString(), MediaType.MOVIE) }
                             )
                         }
                     }
@@ -96,6 +98,7 @@ fun SearchScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        // CORRIGIDO: Importado Icons.Default.Search
                         Icon(
                             Icons.Default.Search,
                             contentDescription = null,

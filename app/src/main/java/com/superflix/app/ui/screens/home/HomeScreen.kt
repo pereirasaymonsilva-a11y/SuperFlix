@@ -56,10 +56,11 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         contentPadding = PaddingValues(horizontal = 16.dp)
                     ) {
+                        // CORRIGIDO: Converte id para String se necessário
                         items(movieIds.take(20)) { id ->
                             MovieCard(
-                                movieId = id,
-                                onClick = { onMovieClick(id, MediaType.MOVIE) }
+                                movieId = id.toString(), // Garante que é String
+                                onClick = { onMovieClick(id.toString(), MediaType.MOVIE) }
                             )
                         }
                     }

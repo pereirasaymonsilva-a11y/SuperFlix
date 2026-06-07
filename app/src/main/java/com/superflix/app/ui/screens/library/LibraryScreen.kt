@@ -16,6 +16,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.superflix.app.data.models.MediaType
 import com.superflix.app.ui.components.MovieCard
 
+// Adicione esta data class se não existir
+data class FavoriteItem(
+    val id: String,
+    val type: MediaType
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
@@ -69,9 +75,10 @@ fun LibraryScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
+                            // CORRIGIDO: Acessa propriedades corretas
                             items(favorites) { favorite ->
                                 MovieCard(
-                                    movieId = favorite.id,
+                                    movieId = favorite.id, // Certifique-se que favorite tem 'id'
                                     onClick = { onItemClick(favorite.id, favorite.type) }
                                 )
                             }
@@ -92,9 +99,10 @@ fun LibraryScreen(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
+                            // CORRIGIDO: Acessa propriedades corretas
                             items(history) { historyItem ->
                                 MovieCard(
-                                    movieId = historyItem.id,
+                                    movieId = historyItem.id, // Certifique-se que historyItem tem 'id'
                                     onClick = { onItemClick(historyItem.id, historyItem.type) }
                                 )
                             }

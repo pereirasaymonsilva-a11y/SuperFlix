@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.superflix.app.data.models.MediaType
+import com.superflix.app.data.models.Genre
 import com.superflix.app.utils.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -194,7 +195,7 @@ fun DetailsScreen(
                             lineHeight = 20.sp
                         )
                         
-                        // Gêneros
+                        // Gêneros - CORRIGIDO
                         if (!movieDetails!!.genres.isNullOrEmpty()) {
                             Spacer(modifier = Modifier.height(24.dp))
                             Text(
@@ -204,9 +205,10 @@ fun DetailsScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Row(
+                                modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                movieDetails!!.genres?.forEach { genre ->
+                                movieDetails!!.genres?.forEach { genre: Genre ->
                                     Surface(
                                         shape = RoundedCornerShape(16.dp),
                                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
