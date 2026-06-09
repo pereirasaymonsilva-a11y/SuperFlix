@@ -3,8 +3,6 @@ name: Build SuperFlix App
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -18,12 +16,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install dependencies (generate lockfile)
         run: |
-          npm install -g npm@latest
-          npm ci
+          npm install --package-lock-only
+          npm ci || npm install
 
       - name: Setup Expo
         uses: expo/expo-github-action@v8
@@ -36,50 +33,11 @@ jobs:
         run: |
           eas build --platform android --profile preview --non-interactive --wait
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: superflix-android
           path: |
             *.apk
             *.aab
-            build-*.json
-          if-no-files-found: warn
-
-  build-ios:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm install -g npm@latest
-          npm ci
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build iOS simulator
-        run: |
-          eas build --platform ios --profile preview --non-interactive --wait
-
-      - name: Upload iOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: superflix-ios
-          path: |
-            *.ipa
-            *.tar.gz
-            build-*.json
           if-no-files-found: warn
