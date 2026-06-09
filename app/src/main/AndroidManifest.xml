@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.superflix.app">
 
-    <!-- Permissões -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SuperFlix"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:usesCleartextTraffic="true">
         
-        <!-- Splash Activity (Launcher) -->
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -30,54 +22,38 @@
             </intent-filter>
         </activity>
         
-        <!-- Home Activity -->
         <activity
             android:name=".ui.home.HomeActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.splash.SplashActivity" />
+            android:exported="false" />
         
-        <!-- Search Activity -->
         <activity
             android:name=".ui.search.SearchActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:exported="false" />
         
-        <!-- Details Activity -->
         <activity
             android:name=".ui.details.DetailsActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:exported="false" />
         
-        <!-- Player Activity -->
         <activity
             android:name=".ui.player.PlayerActivity"
             android:exported="false"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:parentActivityName=".ui.details.DetailsActivity" />
+            android:configChanges="orientation|screenSize" />
         
-        <!-- Calendar Activity -->
         <activity
             android:name=".ui.calendar.CalendarActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:exported="false" />
         
-        <!-- Genres Activity -->
         <activity
             android:name=".ui.genres.GenresActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:exported="false" />
         
-        <!-- Settings Activity -->
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity" />
+            android:exported="false" />
         
-        <!-- Main Activity (redireciona para Splash) -->
         <activity
             android:name=".MainActivity"
-            android:exported="false"
-            android:theme="@style/Theme.SuperFlix" />
+            android:exported="false" />
         
     </application>
 
