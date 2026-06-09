@@ -1,30 +1,40 @@
 package com.superflix.app.ui.screens.library
 
 import androidx.lifecycle.ViewModel
-import com.superflix.app.data.models.FavoriteItem
-import com.superflix.app.data.models.HistoryItem
-import com.superflix.app.data.models.MediaType
+import androidx.lifecycle.viewModelScope
+import com.superflix.app.data.database.AppDatabase
+import com.superflix.app.data.database.FavoriteEntity
+import com.superflix.app.data.database.HistoryEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class LibraryViewModel : ViewModel() {
+class LibraryViewModel(
+    private val database: AppDatabase
+) : ViewModel() {
     
-    private val _favorites = MutableStateFlow<List<FavoriteItem>>(emptyList())
-    val favorites: StateFlow<List<FavoriteItem>> = _favorites
+    private val _favorites = MutableStateFlow<List<FavoriteEntity>>(emptyList())
+    val favorites: StateFlow<List<FavoriteEntity>> = _favorites
     
-    private val _history = MutableStateFlow<List<HistoryItem>>(emptyList())
-    val history: StateFlow<List<HistoryItem>> = _history
+    private val _history = MutableStateFlow<List<HistoryEntity>>(emptyList())
+    val history: StateFlow<List<HistoryEntity>> = _history
     
     init {
-        // Dados mockados para teste
-        _favorites.value = listOf(
-            FavoriteItem("tt0068646", MediaType.MOVIE, "O Poderoso Chefão"),
-            FavoriteItem("tt1375666", MediaType.MOVIE, "Inception")
-        )
-        
-        _history.value = listOf(
-            HistoryItem("tt0133093", MediaType.MOVIE, "Matrix"),
-            HistoryItem("tt0468569", MediaType.MOVIE, "The Dark Knight")
-        )
+        loadFavorites()
+        loadHistory()
+    }
+    
+    fun loadFavorites() {
+        viewModelScope.launch {
+            val favs = database.favoriteDao().getAllFavorites()
+            _favorites.value = favs
+        }
+    }
+    
+    fun loadHistory() {
+        viewModelScope.launch {
+            val hist = database.historyDao().getHistory()
+            _history.value = hist
+        }
     }
 }

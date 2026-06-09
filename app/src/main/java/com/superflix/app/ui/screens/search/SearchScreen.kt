@@ -19,11 +19,11 @@ import com.superflix.app.ui.components.MovieCard
 fun SearchScreen(
     context: Context,
     onResultClick: (String, MediaType) -> Unit,
-    viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(context))
+    viewModel: SearchViewModel = viewModel()  // SEM Factory
 ) {
     var query by remember { mutableStateOf("") }
-    val results = viewModel.searchResults.value
-    val isLoading = viewModel.isLoading.value
+    val results by viewModel.searchResults.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     
     Scaffold(
         topBar = {
@@ -41,7 +41,9 @@ fun SearchScreen(
                 value = query,
                 onValueChange = { 
                     query = it
-                    viewModel.search(it)
+                    if (it.isNotEmpty()) {
+                        viewModel.search(it)
+                    }
                 },
                 label = { Text("Digite sua busca...") },
                 modifier = Modifier
@@ -67,6 +69,8 @@ fun SearchScreen(
                     items(results) { id ->
                         MovieCard(
                             movieId = id,
+                            title = "Resultado",
+                            posterPath = null,
                             onClick = { onResultClick(id, MediaType.MOVIE) }
                         )
                     }

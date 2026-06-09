@@ -6,8 +6,13 @@ object Constants {
     const val ENDPOINT_FILME = "/filme"
     
     private const val TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500"
+    private const val TMDB_BACKDROP_BASE = "https://image.tmdb.org/t/p/w1280"
     
     fun getImageUrl(path: String?): String {
         return if (!path.isNullOrEmpty()) "$TMDB_IMAGE_BASE$path" else ""
+    }
+    
+    fun getBackdropUrl(path: String?): String {
+        return if (!path.isNullOrEmpty()) "$TMDB_BACKDROP_BASE$path" else ""
     }
 }

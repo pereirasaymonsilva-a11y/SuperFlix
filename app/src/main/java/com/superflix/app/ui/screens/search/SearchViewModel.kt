@@ -17,11 +17,17 @@ class SearchViewModel : ViewModel() {
     val isLoading: StateFlow<Boolean> = _isLoading
     
     fun search(query: String) {
+        if (query.isBlank()) return
+        
         viewModelScope.launch {
             _isLoading.value = true
             val results = apiService.search(query)
             _searchResults.value = results
             _isLoading.value = false
         }
+    }
+    
+    fun clearResults() {
+        _searchResults.value = emptyList()
     }
 }

@@ -21,12 +21,11 @@ import com.superflix.app.ui.components.MovieCard
 fun LibraryScreen(
     context: Context,
     onItemClick: (String, MediaType) -> Unit,
-    viewModel: LibraryViewModel = viewModel(factory = LibraryViewModelFactory(context))
+    viewModel: LibraryViewModel = viewModel()  // SEM Factory
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val favorites: List<FavoriteEntity> = viewModel.favorites.value
-    val history: List<HistoryEntity> = viewModel.history.value
-    val tabs = listOf("Favoritos", "Histórico")
+    val favorites by viewModel.favorites.collectAsState()
+    val history by viewModel.history.collectAsState()
     
     Scaffold(
         topBar = {
@@ -41,7 +40,7 @@ fun LibraryScreen(
                 .padding(paddingValues)
         ) {
             TabRow(selectedTabIndex = selectedTab) {
-                tabs.forEachIndexed { index, title ->
+                listOf("Favoritos", "Histórico").forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTab == index,
                         onClick = { selectedTab = index },
@@ -50,47 +49,52 @@ fun LibraryScreen(
                 }
             }
             
-            if (selectedTab == 0) {
-                // Aba de Favoritos
-                if (favorites.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Nenhum favorito ainda")
-                    }
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(favorites) { favorite ->
-                            MovieCard(
-                                movieId = favorite.id,
-                                onClick = { onItemClick(favorite.id, favorite.type) }
-                            )
+            when (selectedTab) {
+                0 -> {
+                    if (favorites.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("Nenhum favorito ainda")
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(favorites) { favorite ->
+                                MovieCard(
+                                    movieId = favorite.id,
+                                    title = favorite.title,
+                                    posterPath = favorite.posterPath,
+                                    onClick = { onItemClick(favorite.id, favorite.type) }
+                                )
+                            }
                         }
                     }
                 }
-            } else {
-                // Aba de Histórico
-                if (history.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Nenhum histórico encontrado")
-                    }
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(history) { historyItem ->
-                            MovieCard(
-                                movieId = historyItem.id,
-                                onClick = { onItemClick(historyItem.id, historyItem.type) }
-                            )
+                1 -> {
+                    if (history.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("Nenhum histórico encontrado")
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(history) { historyItem ->
+                                MovieCard(
+                                    movieId = historyItem.id,
+                                    title = historyItem.title,
+                                    posterPath = historyItem.posterPath,
+                                    onClick = { onItemClick(historyItem.id, historyItem.type) }
+                                )
+                            }
                         }
                     }
                 }
