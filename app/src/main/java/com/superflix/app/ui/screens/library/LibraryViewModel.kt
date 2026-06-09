@@ -14,6 +14,7 @@ class LibraryViewModel(private val repository: MediaRepository) : ViewModel() {
     val history = mutableStateOf<List<HistoryEntity>>(emptyList())
     
     init {
+        // Dados mockados para teste
         favorites.value = listOf(
             FavoriteEntity("550", "Fight Club", null, MediaType.MOVIE, System.currentTimeMillis()),
             FavoriteEntity("13", "Forrest Gump", null, MediaType.MOVIE, System.currentTimeMillis()),

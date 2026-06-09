@@ -49,18 +49,27 @@ fun LibraryScreen(
             
             val items = if (selectedTab == 0) favorites else history
             
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(items) { item ->
-                    MovieCard(
-                        movieId = item.id,
-                        onClick = { onItemClick(item.id, item.type) }
-                    )
+            if (items.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    Text("Nenhum item encontrado")
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(items) { item ->
+                        MovieCard(
+                            movieId = item.id,
+                            onClick = { onItemClick(item.id, item.type) }
+                        )
+                    }
                 }
             }
         }
