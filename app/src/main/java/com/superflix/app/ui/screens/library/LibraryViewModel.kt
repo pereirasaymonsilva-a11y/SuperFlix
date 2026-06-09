@@ -29,9 +29,9 @@ class LibraryViewModel(private val repository: MediaRepository) : ViewModel() {
 }
 
 class LibraryViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LibraryViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
             return LibraryViewModel(MediaRepository(context)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

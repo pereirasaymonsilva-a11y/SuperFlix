@@ -7,9 +7,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.superflix.app.data.database.FavoriteEntity
+import com.superflix.app.data.database.HistoryEntity
 import com.superflix.app.data.models.MediaType
 import com.superflix.app.ui.components.MovieCard
 
@@ -21,8 +24,8 @@ fun LibraryScreen(
     viewModel: LibraryViewModel = viewModel(factory = LibraryViewModelFactory(context))
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val favorites = viewModel.favorites.value
-    val history = viewModel.history.value
+    val favorites: List<FavoriteEntity> = viewModel.favorites.value
+    val history: List<HistoryEntity> = viewModel.history.value
     val tabs = listOf("Favoritos", "Histórico")
     
     Scaffold(
@@ -47,28 +50,48 @@ fun LibraryScreen(
                 }
             }
             
-            val items = if (selectedTab == 0) favorites else history
-            
-            if (items.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
-                    Text("Nenhum item encontrado")
+            if (selectedTab == 0) {
+                // Aba de Favoritos
+                if (favorites.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Nenhum favorito ainda")
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(favorites) { favorite ->
+                            MovieCard(
+                                movieId = favorite.id,
+                                onClick = { onItemClick(favorite.id, favorite.type) }
+                            )
+                        }
+                    }
                 }
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(items) { item ->
-                        MovieCard(
-                            movieId = item.id,
-                            onClick = { onItemClick(item.id, item.type) }
-                        )
+                // Aba de Histórico
+                if (history.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Nenhum histórico encontrado")
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(history) { historyItem ->
+                            MovieCard(
+                                movieId = historyItem.id,
+                                onClick = { onItemClick(historyItem.id, historyItem.type) }
+                            )
+                        }
                     }
                 }
             }
