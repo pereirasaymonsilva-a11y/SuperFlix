@@ -1,3 +1,4 @@
+// ui/screens/home/HomeScreen.kt
 package com.superflix.app.ui.screens.home
 
 import android.content.Context
@@ -7,12 +8,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.superflix.app.data.models.MediaType
-import com.superflix.app.ui.components.BottomNavigationBar
 import com.superflix.app.ui.components.MovieCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,51 +19,69 @@ import com.superflix.app.ui.components.MovieCard
 fun HomeScreen(
     context: Context,
     onMovieClick: (String, MediaType) -> Unit,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(context))
+    viewModel: HomeViewModel = viewModel()
 ) {
-    val movieIds = viewModel.movieIds.value
-    val isLoading = viewModel.isLoading.value
+    val movies by viewModel.movies.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("SuperFlix") }
+                title = { Text("SuperFlix") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                )
             )
-        },
-        bottomBar = { BottomNavigationBar() }
+        }
     ) { paddingValues ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                item {
-                    Text(
-                        text = "Filmes Populares",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(16.dp)
-                    )
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-                item {
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        contentPadding = PaddingValues(horizontal = 16.dp)
-                    ) {
-                        items(movieIds) { id ->
-                            MovieCard(
-                                movieId = id,
-                                onClick = { onMovieClick(id, MediaType.MOVIE) }
-                            )
+            }
+            movies.isEmpty() -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    Text("Nenhum filme encontrado")
+                }
+            }
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    item {
+                        Text(
+                            text = "Filmes Populares",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                    item {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = PaddingValues(horizontal = 16.dp)
+                        ) {
+                            items(movies) { movie ->
+                                MovieCard(
+                                    movieId = movie.id,
+                                    title = movie.title,
+                                    posterPath = movie.posterPath,
+                                    onClick = { onMovieClick(movie.id, MediaType.MOVIE) }
+                                )
+                            }
                         }
                     }
                 }

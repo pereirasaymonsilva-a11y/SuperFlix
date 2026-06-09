@@ -1,8 +1,8 @@
+// ui/navigation/NavGraph.kt
 package com.superflix.app.ui.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,19 +12,18 @@ import com.superflix.app.data.models.MediaType
 import com.superflix.app.ui.screens.details.DetailsScreen
 import com.superflix.app.ui.screens.home.HomeScreen
 import com.superflix.app.ui.screens.library.LibraryScreen
-import com.superflix.app.ui.screens.player.PlayerScreen
 import com.superflix.app.ui.screens.profile.ProfileScreen
 import com.superflix.app.ui.screens.search.SearchScreen
 
 @Composable
-fun NavGraph(navController: NavHostController = rememberNavController()) {
-    val context = LocalContext.current
+fun NavGraph(context: Context) {
+    val navController = rememberNavController()
     
     NavHost(
         navController = navController,
-        startDestination = Destinations.Home.route
+        startDestination = "home"
     ) {
-        composable(Destinations.Home.route) {
+        composable("home") {
             HomeScreen(
                 context = context,
                 onMovieClick = { id, type ->
@@ -33,7 +32,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
         
-        composable(Destinations.Search.route) {
+        composable("search") {
             SearchScreen(
                 context = context,
                 onResultClick = { id, type ->
@@ -42,7 +41,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
         
-        composable(Destinations.Library.route) {
+        composable("library") {
             LibraryScreen(
                 context = context,
                 onItemClick = { id, type ->
@@ -51,37 +50,29 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
         
-        composable(Destinations.Profile.route) {
+        composable("profile") {
             ProfileScreen()
         }
         
         composable(
-            route = "details/{movieId}/{type}",
+            "details/{movieId}/{mediaType}",
             arguments = listOf(
                 navArgument("movieId") { type = NavType.StringType },
-                navArgument("type") { type = NavType.StringType }
+                navArgument("mediaType") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val movieId = backStackEntry.arguments?.getString("movieId") ?: return@composable
-            val type = MediaType.valueOf(backStackEntry.arguments?.getString("type") ?: "MOVIE")
+            val movieId = backStackEntry.arguments?.getString("movieId") ?: ""
+            val mediaType = when (backStackEntry.arguments?.getString("mediaType")) {
+                "MOVIE" -> MediaType.MOVIE
+                "TV" -> MediaType.TV
+                else -> MediaType.MOVIE
+            }
             
             DetailsScreen(
                 movieId = movieId,
-                mediaType = type,
-                onPlayClick = {
-                    navController.navigate("player/$movieId")
-                }
+                mediaType = mediaType,
+                onPlayClick = { /* Abrir player */ }
             )
-        }
-        
-        composable(
-            route = "player/{movieId}",
-            arguments = listOf(
-                navArgument("movieId") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val movieId = backStackEntry.arguments?.getString("movieId") ?: return@composable
-            PlayerScreen(movieId = movieId)
         }
     }
 }

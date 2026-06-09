@@ -8,21 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import com.superflix.app.ui.navigation.NavGraph
-import com.superflix.app.ui.theme.SuperFlixAppTheme
+import com.superflix.app.ui.theme.SuperFlixTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SuperFlixAppTheme {
+            SuperFlixTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
+                    NavGraph(context = applicationContext)
                 }
             }
         }
