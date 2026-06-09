@@ -1,39 +1,30 @@
 package com.superflix.app.ui.screens.library
 
-import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.superflix.app.data.database.FavoriteEntity
-import com.superflix.app.data.database.HistoryEntity
+import com.superflix.app.data.models.FavoriteItem
+import com.superflix.app.data.models.HistoryItem
 import com.superflix.app.data.models.MediaType
-import com.superflix.app.data.repository.MediaRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class LibraryViewModel(private val repository: MediaRepository) : ViewModel() {
-    val favorites = mutableStateOf<List<FavoriteEntity>>(emptyList())
-    val history = mutableStateOf<List<HistoryEntity>>(emptyList())
+class LibraryViewModel : ViewModel() {
+    
+    private val _favorites = MutableStateFlow<List<FavoriteItem>>(emptyList())
+    val favorites: StateFlow<List<FavoriteItem>> = _favorites
+    
+    private val _history = MutableStateFlow<List<HistoryItem>>(emptyList())
+    val history: StateFlow<List<HistoryItem>> = _history
     
     init {
         // Dados mockados para teste
-        favorites.value = listOf(
-            FavoriteEntity("550", "Fight Club", null, MediaType.MOVIE, System.currentTimeMillis()),
-            FavoriteEntity("13", "Forrest Gump", null, MediaType.MOVIE, System.currentTimeMillis()),
-            FavoriteEntity("497", "The Matrix", null, MediaType.MOVIE, System.currentTimeMillis())
+        _favorites.value = listOf(
+            FavoriteItem("tt0068646", MediaType.MOVIE, "O Poderoso Chefão"),
+            FavoriteItem("tt1375666", MediaType.MOVIE, "Inception")
         )
-        history.value = listOf(
-            HistoryEntity("550", "Fight Club", null, MediaType.MOVIE, 50, System.currentTimeMillis()),
-            HistoryEntity("497", "The Matrix", null, MediaType.MOVIE, 30, System.currentTimeMillis()),
-            HistoryEntity("19995", "Avatar", null, MediaType.MOVIE, 80, System.currentTimeMillis())
+        
+        _history.value = listOf(
+            HistoryItem("tt0133093", MediaType.MOVIE, "Matrix"),
+            HistoryItem("tt0468569", MediaType.MOVIE, "The Dark Knight")
         )
-    }
-}
-
-class LibraryViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LibraryViewModel::class.java)) {
-            return LibraryViewModel(MediaRepository(context)) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

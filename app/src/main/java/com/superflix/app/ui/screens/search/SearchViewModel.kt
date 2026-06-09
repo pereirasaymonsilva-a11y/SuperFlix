@@ -1,32 +1,27 @@
 package com.superflix.app.ui.screens.search
 
-import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.superflix.app.data.repository.MediaRepository
+import androidx.lifecycle.viewModelScope
+import com.superflix.app.data.api.ApiService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class SearchViewModel(private val repository: MediaRepository) : ViewModel() {
-    val searchResults = mutableStateOf<List<String>>(emptyList())
-    val isLoading = mutableStateOf(false)
+class SearchViewModel : ViewModel() {
+    private val apiService = ApiService()
+    
+    private val _searchResults = MutableStateFlow<List<String>>(emptyList())
+    val searchResults: StateFlow<List<String>> = _searchResults
+    
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
     
     fun search(query: String) {
-        isLoading.value = true
-        if (query.isNotEmpty()) {
-            searchResults.value = listOf("550", "13", "155", "497", "19995", "120", "121")
-        } else {
-            searchResults.value = emptyList()
+        viewModelScope.launch {
+            _isLoading.value = true
+            val results = apiService.search(query)
+            _searchResults.value = results
+            _isLoading.value = false
         }
-        isLoading.value = false
-    }
-}
-
-class SearchViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(MediaRepository(context)) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

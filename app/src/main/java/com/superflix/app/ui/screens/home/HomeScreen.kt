@@ -1,4 +1,3 @@
-// ui/screens/home/HomeScreen.kt
 package com.superflix.app.ui.screens.home
 
 import android.content.Context
@@ -14,7 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.superflix.app.data.models.MediaType
 import com.superflix.app.ui.components.MovieCard
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     context: Context,
@@ -27,40 +25,26 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("SuperFlix") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+                title = { Text("SuperFlix") }
             )
         }
     ) { paddingValues ->
         when {
             isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
+                Box(modifier = Modifier.fillMaxSize().padding(paddingValues), 
+                    contentAlignment = androidx.compose.ui.Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
             movies.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
-                ) {
+                Box(modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = androidx.compose.ui.Alignment.Center) {
                     Text("Nenhum filme encontrado")
                 }
             }
             else -> {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentPadding = PaddingValues(bottom = 16.dp)
+                    modifier = Modifier.fillMaxSize().padding(paddingValues)
                 ) {
                     item {
                         Text(

@@ -29,5 +29,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppContent() {
-    NavGraph(context = applicationContext)
+    // Passa o contexto corretamente
+    val context = androidx.compose.ui.platform.LocalContext.current
+    NavGraph(context = context)
 }

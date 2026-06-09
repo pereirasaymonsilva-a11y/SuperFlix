@@ -1,6 +1,6 @@
-// data/models/Movie.kt
 package com.superflix.app.data.models
 
+// Modelo principal para filmes/séries
 data class Movie(
     val id: String,
     val title: String,
@@ -9,9 +9,9 @@ data class Movie(
     val overview: String? = null,
     val voteAverage: Double? = null,
     val releaseDate: String? = null,
-    val genres: List<Genre>? = null,
+    val year: String? = null,
     val runtime: Int? = null,
-    val year: String? = null
+    val genres: List<Genre>? = null
 )
 
 data class Genre(
@@ -23,17 +23,16 @@ enum class MediaType {
     MOVIE, TV, ANIME, DORAMA
 }
 
-// Para histórico e favoritos
-data class FavoriteItem(
+// Para dados da API
+data class MovieDetails(
     val id: String,
-    val type: MediaType,
-    val title: String = "",
-    val posterPath: String? = null
-)
-
-data class HistoryItem(
-    val id: String,
-    val type: MediaType,
-    val title: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    val title: String,
+    val overview: String? = null,
+    val posterPath: String? = null,
+    val backdropPath: String? = null,
+    val voteAverage: Double? = null,
+    val releaseDate: String? = null,
+    val year: String? = null,
+    val runtime: Int? = null,
+    val genres: List<Genre>? = null
 )
