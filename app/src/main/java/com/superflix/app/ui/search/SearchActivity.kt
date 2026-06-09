@@ -1,5 +1,6 @@
 package com.superflix.app.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.superflix.app.R
 import com.superflix.app.data.api.SuperFlixApi
+import com.superflix.app.data.models.Movie
+import com.superflix.app.data.models.Series
 import com.superflix.app.data.repositories.SearchRepository
 import com.superflix.app.ui.details.DetailsActivity
 import com.superflix.app.ui.home.HomeAdapter
@@ -58,14 +61,14 @@ class SearchActivity : AppCompatActivity() {
             }
             resultsRecycler.adapter = HomeAdapter(items) { item ->
                 when (item) {
-                    is com.superflix.app.data.models.Movie -> {
+                    is Movie -> {
                         val intent = Intent(this@SearchActivity, DetailsActivity::class.java)
                         intent.putExtra("type", "filme")
                         intent.putExtra("id", item.id)
                         intent.putExtra("title", item.title)
                         startActivity(intent)
                     }
-                    is com.superflix.app.data.models.Series -> {
+                    is Series -> {
                         val intent = Intent(this@SearchActivity, DetailsActivity::class.java)
                         intent.putExtra("type", "serie")
                         intent.putExtra("id", item.id)

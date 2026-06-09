@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.superflix.app.R
 import com.superflix.app.data.api.SuperFlixApi
 import com.superflix.app.data.cache.LocalCache
+import com.superflix.app.data.models.Movie
+import com.superflix.app.data.models.Series
 import com.superflix.app.data.repositories.MovieRepository
 import com.superflix.app.data.repositories.SeriesRepository
 import com.superflix.app.ui.details.DetailsActivity
-import com.superflix.app.ui.search.SearchActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
