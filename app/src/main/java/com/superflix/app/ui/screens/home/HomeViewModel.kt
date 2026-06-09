@@ -24,10 +24,18 @@ class HomeViewModel : ViewModel() {
     fun loadMovies() {
         viewModelScope.launch {
             _isLoading.value = true
+            println("🚀 Carregando filmes...")
+            
             val ids = apiService.getMovieIds("filme")
-            val moviesList = ids.take(20).mapNotNull { id ->
-                apiService.getMovieDetails(id)
+            println("📋 IDs obtidos: $ids")
+            
+            val moviesList = ids.take(10).mapNotNull { id ->
+                val movie = apiService.getMovieDetails(id)
+                println("🎬 Filme carregado: ${movie?.title}")
+                movie
             }
+            
+            println("✅ Total de filmes carregados: ${moviesList.size}")
             _movies.value = moviesList
             _isLoading.value = false
         }
