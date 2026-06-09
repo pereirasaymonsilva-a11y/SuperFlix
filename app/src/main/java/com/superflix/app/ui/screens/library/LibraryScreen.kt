@@ -1,4 +1,3 @@
-// ui/screens/library/LibraryScreen.kt
 package com.superflix.app.ui.screens.library
 
 import android.content.Context
@@ -6,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,12 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.superflix.app.data.models.MediaType
 import com.superflix.app.ui.components.MovieCard
 
-// Adicione esta data class se não existir
-data class FavoriteItem(
-    val id: String,
-    val type: MediaType
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
@@ -29,19 +20,15 @@ fun LibraryScreen(
     onItemClick: (String, MediaType) -> Unit,
     viewModel: LibraryViewModel = viewModel(factory = LibraryViewModelFactory(context))
 ) {
-    val favorites by viewModel.favorites.collectAsState()
-    val history by viewModel.history.collectAsState()
     var selectedTab by remember { mutableStateOf(0) }
-    
+    val favorites = viewModel.favorites
+    val history = viewModel.history
     val tabs = listOf("Favoritos", "Histórico")
     
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Minha Biblioteca") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+                title = { Text("Minha Biblioteca") }
             )
         }
     ) { paddingValues ->
@@ -60,79 +47,22 @@ fun LibraryScreen(
                 }
             }
             
-            when (selectedTab) {
-                0 -> {
-                    if (favorites.isEmpty()) {
-                        EmptyState(
-                            icon = Icons.Default.FavoriteBorder,
-                            message = "Você ainda não tem filmes favoritos"
-                        )
-                    } else {
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            // CORRIGIDO: Acessa propriedades corretas
-                            items(favorites) { favorite ->
-                                MovieCard(
-                                    movieId = favorite.id, // Certifique-se que favorite tem 'id'
-                                    onClick = { onItemClick(favorite.id, favorite.type) }
-                                )
-                            }
-                        }
-                    }
-                }
-                1 -> {
-                    if (history.isEmpty()) {
-                        EmptyState(
-                            icon = Icons.Default.History,
-                            message = "Nada assistido recentemente"
-                        )
-                    } else {
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            // CORRIGIDO: Acessa propriedades corretas
-                            items(history) { historyItem ->
-                                MovieCard(
-                                    movieId = historyItem.id, // Certifique-se que historyItem tem 'id'
-                                    onClick = { onItemClick(historyItem.id, historyItem.type) }
-                                )
-                            }
-                        }
-                    }
+            val items = if (selectedTab == 0) favorites else history
+            
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(items) { item ->
+                    MovieCard(
+                        movieId = item.id,
+                        onClick = { onItemClick(item.id, item.type) }
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun EmptyState(icon: androidx.compose.ui.graphics.vector.ImageVector, message: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            icon,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = message,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
     }
 }
