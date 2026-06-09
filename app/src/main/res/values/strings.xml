@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SuperFlix</string>
+    <string name="search_hint">🔍 Pesquisar filmes, séries...</string>
+    <string name="watch_now">▶ ASSISTIR AGORA</string>
+    <string name="favorite">❤️ Favoritar</string>
+    <string name="loading">Carregando...</string>
+    <string name="error_loading">Erro ao carregar conteúdo</string>
+    <string name="no_results">Nenhum resultado encontrado</string>
+</resources>

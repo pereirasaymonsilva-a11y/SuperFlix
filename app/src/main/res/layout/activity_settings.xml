@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Configurações"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preferências"
+            android:textColor="#ff0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+        
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/autoPlaySwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Auto-play próximo episódio"
+            android:textColor="#ffffff"
+            android:padding="12dp" />
+        
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/subtitlesSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Legendas automáticas"
+            android:textColor="#ffffff"
+            android:padding="12dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qualidade"
+            android:textColor="#ff0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
+        
+        <RadioGroup
+            android:id="@+id/qualityGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <RadioButton
+                android:id="@+id/qualityAuto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Automática"
+                android:textColor="#ffffff"
+                android:padding="8dp" />
+            
+            <RadioButton
+                android:id="@+id/quality1080"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1080p (Full HD)"
+                android:textColor="#ffffff"
+                android:padding="8dp" />
+            
+            <RadioButton
+                android:id="@+id/quality720"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="720p (HD)"
+                android:textColor="#ffffff"
+                android:padding="8dp" />
+            
+        </RadioGroup>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sobre"
+            android:textColor="#ff0000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp" />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SuperFlix App v1.0.0"
+            android:textColor="#888888"
+            android:padding="8dp" />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Conteúdo fornecido por SuperFlixAPI"
+            android:textColor="#888888"
+            android:padding="8dp" />
+        
+    </LinearLayout>
+    
+</LinearLayout>
