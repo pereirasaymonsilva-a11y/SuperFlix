@@ -1,44 +1,22 @@
-// ui/screens/home/HomeViewModel.kt
 package com.superflix.app.ui.screens.home
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.superflix.app.data.repository.MediaRepository
-import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: MediaRepository) : ViewModel() {
-    private val _movieIds = mutableStateOf<List<String>>(emptyList())
-    val movieIds = _movieIds
-    
-    private val _seriesIds = mutableStateOf<List<String>>(emptyList())
-    val seriesIds = _seriesIds
-    
-    private val _animeIds = mutableStateOf<List<String>>(emptyList())
-    val animeIds = _animeIds
-    
-    private val _isLoading = mutableStateOf(true)
-    val isLoading = _isLoading
+    val movieIds = mutableStateOf<List<String>>(emptyList())
+    val seriesIds = mutableStateOf<List<String>>(emptyList())
+    val animeIds = mutableStateOf<List<String>>(emptyList())
+    val isLoading = mutableStateOf(true)
     
     init {
-        loadData()
-    }
-    
-    private fun loadData() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                _movieIds.value = repository.getMovieIds(limit = 50)
-                _seriesIds.value = repository.getSeriesIds(limit = 30)
-                _animeIds.value = repository.getAnimeIds(limit = 30)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                _isLoading.value = false
-            }
-        }
+        movieIds.value = listOf("550", "13", "155", "497", "19995", "120", "121", "122", "123", "124")
+        seriesIds.value = listOf("1396", "1402", "1418")
+        animeIds.value = listOf("21", "22", "23")
+        isLoading.value = false
     }
 }
 

@@ -21,8 +21,8 @@ fun LibraryScreen(
     viewModel: LibraryViewModel = viewModel(factory = LibraryViewModelFactory(context))
 ) {
     var selectedTab by remember { mutableStateOf(0) }
-    val favorites = viewModel.favorites
-    val history = viewModel.history
+    val favorites = viewModel.favorites.value
+    val history = viewModel.history.value
     val tabs = listOf("Favoritos", "Histórico")
     
     Scaffold(

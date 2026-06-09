@@ -22,8 +22,8 @@ fun HomeScreen(
     onMovieClick: (String, MediaType) -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(context))
 ) {
-    val movieIds = viewModel.movieIds
-    val isLoading = viewModel.isLoading
+    val movieIds = viewModel.movieIds.value
+    val isLoading = viewModel.isLoading.value
     
     Scaffold(
         topBar = {

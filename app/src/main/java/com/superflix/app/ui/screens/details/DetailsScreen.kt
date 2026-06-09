@@ -28,9 +28,9 @@ fun DetailsScreen(
     onPlayClick: () -> Unit,
     viewModel: DetailsViewModel = viewModel()
 ) {
-    val movieDetails = viewModel.movieDetails
-    val isLoading = viewModel.isLoading
-    val isFavorite = viewModel.isFavorite
+    val movieDetails = viewModel.movieDetails.value
+    val isLoading = viewModel.isLoading.value
+    val isFavorite = viewModel.isFavorite.value
     
     LaunchedEffect(movieId) {
         viewModel.loadMovieDetails(movieId, mediaType)

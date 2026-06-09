@@ -22,8 +22,8 @@ fun SearchScreen(
     viewModel: SearchViewModel = viewModel(factory = SearchViewModelFactory(context))
 ) {
     var query by remember { mutableStateOf("") }
-    val results = viewModel.searchResults
-    val isLoading = viewModel.isLoading
+    val results = viewModel.searchResults.value
+    val isLoading = viewModel.isLoading.value
     
     Scaffold(
         topBar = {

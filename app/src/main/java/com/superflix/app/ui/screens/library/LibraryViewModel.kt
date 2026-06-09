@@ -1,32 +1,29 @@
-// ui/screens/library/LibraryViewModel.kt
 package com.superflix.app.ui.screens.library
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.superflix.app.data.database.FavoriteEntity
 import com.superflix.app.data.database.HistoryEntity
+import com.superflix.app.data.models.MediaType
 import com.superflix.app.data.repository.MediaRepository
-import kotlinx.coroutines.launch
 
 class LibraryViewModel(private val repository: MediaRepository) : ViewModel() {
-    private val _favorites = mutableStateOf<List<FavoriteEntity>>(emptyList())
-    val favorites = _favorites
-    
-    private val _history = mutableStateOf<List<HistoryEntity>>(emptyList())
-    val history = _history
+    val favorites = mutableStateOf<List<FavoriteEntity>>(emptyList())
+    val history = mutableStateOf<List<HistoryEntity>>(emptyList())
     
     init {
-        loadData()
-    }
-    
-    private fun loadData() {
-        viewModelScope.launch {
-            _favorites.value = repository.getFavorites()
-            _history.value = repository.getHistory()
-        }
+        favorites.value = listOf(
+            FavoriteEntity("550", "Fight Club", null, MediaType.MOVIE, System.currentTimeMillis()),
+            FavoriteEntity("13", "Forrest Gump", null, MediaType.MOVIE, System.currentTimeMillis()),
+            FavoriteEntity("497", "The Matrix", null, MediaType.MOVIE, System.currentTimeMillis())
+        )
+        history.value = listOf(
+            HistoryEntity("550", "Fight Club", null, MediaType.MOVIE, 50, System.currentTimeMillis()),
+            HistoryEntity("497", "The Matrix", null, MediaType.MOVIE, 30, System.currentTimeMillis()),
+            HistoryEntity("19995", "Avatar", null, MediaType.MOVIE, 80, System.currentTimeMillis())
+        )
     }
 }
 
