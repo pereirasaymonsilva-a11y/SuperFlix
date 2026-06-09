@@ -10,7 +10,8 @@ data class Movie(
     val voteAverage: Double? = null,
     val releaseDate: String? = null,
     val genres: List<Genre>? = null,
-    val runtime: Int? = null
+    val runtime: Int? = null,
+    val year: String? = null
 )
 
 data class Genre(
@@ -21,3 +22,18 @@ data class Genre(
 enum class MediaType {
     MOVIE, TV, ANIME, DORAMA
 }
+
+// Para histórico e favoritos
+data class FavoriteItem(
+    val id: String,
+    val type: MediaType,
+    val title: String = "",
+    val posterPath: String? = null
+)
+
+data class HistoryItem(
+    val id: String,
+    val type: MediaType,
+    val title: String = "",
+    val timestamp: Long = System.currentTimeMillis()
+)

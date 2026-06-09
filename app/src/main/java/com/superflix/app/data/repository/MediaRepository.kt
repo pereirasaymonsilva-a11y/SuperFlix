@@ -1,96 +1,63 @@
 // data/repository/MediaRepository.kt
 package com.superflix.app.data.repository
 
-import android.content.Context
-import com.superflix.app.data.api.RetrofitInstance
-import com.superflix.app.data.database.AppDatabase
-import com.superflix.app.data.database.FavoriteEntity
-import com.superflix.app.data.database.HistoryEntity
-import com.superflix.app.data.models.MediaItem
+import com.superflix.app.data.api.ApiService
 import com.superflix.app.data.models.MediaType
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
+import com.superflix.app.data.models.Movie
+import javax.inject.Inject
 
-class MediaRepository(private val context: Context) {
-    private val api = RetrofitInstance.api
-    private val database = AppDatabase.getDatabase(context)
+class MediaRepository @Inject constructor(
+    private val apiService: ApiService
+) {
     
-    suspend fun getMovieIds(limit: Int = 50): List<String> = withContext(Dispatchers.IO) {
-        try {
-            api.getMovieIds(limit = limit)
+    suspend fun getMovieIds(limit: Int = 20): List<String> {
+        return try {
+            val ids = apiService.getMovieIds("filme")
+            ids.take(limit)
         } catch (e: Exception) {
             emptyList()
         }
     }
     
-    suspend fun getSeriesIds(limit: Int = 50): List<String> = withContext(Dispatchers.IO) {
-        try {
-            api.getSeriesIds(limit = limit)
+    suspend fun getSeriesIds(limit: Int = 20): List<String> {
+        return try {
+            val ids = apiService.getMovieIds("serie")
+            ids.take(limit)
         } catch (e: Exception) {
             emptyList()
         }
     }
     
-    suspend fun getAnimeIds(limit: Int = 50): List<String> = withContext(Dispatchers.IO) {
-        try {
-            api.getAnimeIds(limit = limit)
+    suspend fun getAnimeIds(limit: Int = 20): List<String> {
+        return try {
+            val ids = apiService.getMovieIds("anime")
+            ids.take(limit)
         } catch (e: Exception) {
             emptyList()
         }
     }
     
-    suspend fun search(query: String): List<String> = withContext(Dispatchers.IO) {
-        try {
-            api.search(query = query)
+    suspend fun getMovieDetails(movieId: String): Movie? {
+        return try {
+            apiService.getMovieDetails(movieId)
         } catch (e: Exception) {
-            emptyList()
+            null
         }
     }
     
-    suspend fun getFavorites(): List<FavoriteEntity> = withContext(Dispatchers.IO) {
-        database.favoriteDao().getAllFavorites()
-    }
-    
-    suspend fun addToFavorites(item: MediaItem) = withContext(Dispatchers.IO) {
-        database.favoriteDao().addFavorite(
-            FavoriteEntity(
-                id = item.id,
-                title = item.title,
-                posterPath = item.posterPath,
-                type = item.type
-            )
-        )
-    }
-    
-    suspend fun removeFromFavorites(id: String) = withContext(Dispatchers.IO) {
-        database.favoriteDao().removeFavorite(
-            FavoriteEntity(id, "", null, MediaType.MOVIE)
-        )
-    }
-    
-    suspend fun isFavorite(id: String): Boolean = withContext(Dispatchers.IO) {
-        database.favoriteDao().isFavorite(id)
-    }
-    
-    suspend fun addToHistory(item: MediaItem, progress: Int = 0) = withContext(Dispatchers.IO) {
-        database.historyDao().addToHistory(
-            HistoryEntity(
-                id = item.id,
-                title = item.title,
-                posterPath = item.posterPath,
-                type = item.type,
-                progress = progress
-            )
-        )
-    }
-    
-    suspend fun getHistory(): List<HistoryEntity> = withContext(Dispatchers.IO) {
-        database.historyDao().getHistory()
-    }
-    
-    fun getContinueWatching(): Flow<List<HistoryEntity>> = flow {
-        emit(database.historyDao().getHistory())
+    suspend fun search(query: String): List<String> {
+        return try {
+            // Implementar busca na API
+            val url = "${com.superflix.app.utils.Constants.BASE_API_URL}${com.superflix.app.utils.Constants.ENDPOINT_LISTA}?category=pesquisa&q=$query&format=json"
+            val json = java.net.URL(url).readText()
+            val array = org.json.JSONArray(json)
+            val results = mutableListOf<String>()
+            for (i in 0 until array.length()) {
+                results.add(array.getString(i))
+            }
+            results
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 }

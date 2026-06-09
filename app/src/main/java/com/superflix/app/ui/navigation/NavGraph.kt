@@ -49,30 +49,28 @@ fun NavGraph(context: Context) {
                 }
             )
         }
-        
-        composable("profile") {
-            ProfileScreen()
-        }
-        
-        composable(
-            "details/{movieId}/{mediaType}",
-            arguments = listOf(
-                navArgument("movieId") { type = NavType.StringType },
-                navArgument("mediaType") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val movieId = backStackEntry.arguments?.getString("movieId") ?: ""
-            val mediaType = when (backStackEntry.arguments?.getString("mediaType")) {
-                "MOVIE" -> MediaType.MOVIE
-                "TV" -> MediaType.TV
-                else -> MediaType.MOVIE
-            }
-            
-            DetailsScreen(
-                movieId = movieId,
-                mediaType = mediaType,
-                onPlayClick = { /* Abrir player */ }
-            )
+
+composable(
+    "details/{movieId}/{mediaType}",
+    arguments = listOf(
+        navArgument("movieId") { type = NavType.StringType },
+        navArgument("mediaType") { type = NavType.StringType }
+    )
+) { backStackEntry ->
+    val movieId = backStackEntry.arguments?.getString("movieId") ?: ""
+    val mediaType = when (backStackEntry.arguments?.getString("mediaType")) {
+        "MOVIE" -> MediaType.MOVIE
+        "TV" -> MediaType.TV  // ← Isso já existe, só garantir
+        "ANIME" -> MediaType.ANIME
+        "DORAMA" -> MediaType.DORAMA
+        else -> MediaType.MOVIE
+    }
+    
+    DetailsScreen(
+        movieId = movieId,
+        mediaType = mediaType,
+        onPlayClick = { /* Abrir player */ }
+           )
         }
     }
 }
