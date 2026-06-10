@@ -1,7 +1,10 @@
 package com.superflix.app.ui.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.superflix.app.R
@@ -37,11 +40,11 @@ class HomeAdapter(
     
     override fun getItemCount() = items.size
     
-    class ViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val titleView: TextView = itemView.findViewById(R.id.itemTitle)
+        private val imageView: ImageView = itemView.findViewById(R.id.itemImage)
+        
         fun bind(title: String, poster: String, onClick: () -> Unit) {
-            val titleView = itemView.findViewById<android.widget.TextView>(R.id.itemTitle)
-            val imageView = itemView.findViewById<android.widget.ImageView>(R.id.itemImage)
-            
             titleView.text = title
             
             Glide.with(itemView.context)

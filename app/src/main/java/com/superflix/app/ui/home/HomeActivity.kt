@@ -15,6 +15,7 @@ import com.superflix.app.data.models.Series
 import com.superflix.app.data.repositories.MovieRepository
 import com.superflix.app.data.repositories.SeriesRepository
 import com.superflix.app.ui.details.DetailsActivity
+import com.superflix.app.ui.search.SearchActivity  // <-- IMPORT ADICIONADO
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {

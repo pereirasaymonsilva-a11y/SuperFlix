@@ -1,8 +1,8 @@
 package com.superflix.app.data.models
 
 data class Movie(
-    val id: String,
-    val title: String,
+    val id: String = "",
+    val title: String = "",
     val originalTitle: String = "",
     val overview: String = "",
     val posterPath: String = "",

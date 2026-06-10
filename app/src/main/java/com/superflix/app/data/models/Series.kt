@@ -1,8 +1,8 @@
 package com.superflix.app.data.models
 
 data class Series(
-    val id: String,
-    val title: String,
+    val id: String = "",
+    val title: String = "",
     val overview: String = "",
     val posterPath: String = "",
     val backdropPath: String = "",
